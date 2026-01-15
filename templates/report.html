@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canada Data Jobs Daily Report</title>
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f7fa;
+        }
+
+        /* Email Container */
+        .email-container {
+            max-width: 700px;
+            width: 100%;
+            margin: 0 auto;
+            background-color: #ffffff;
+            overflow: hidden;
+        }
+
+        /* Header Section */
+        .header {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+            color: white;
+            padding: 30px 25px;
+            text-align: center;
+        }
+
+        .header-flag {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+
+        .header-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .header-subtitle {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .header-date {
+            margin-top: 15px;
+            font-size: 13px;
+            background: rgba(255, 255, 255, 0.2);
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+        }
+
+        /* Summary Stats Section */
+        .summary-section {
+            padding: 25px;
+            background: linear-gradient(180deg, #f8f9fa 0%, #ffffff 100%);
+            border-bottom: 1px solid #eee;
+        }
+
+        .summary-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .summary-grid {
+            display: table;
+            width: 100%;
+            table-layout: fixed;
+            border-spacing: 8px;
+        }
+
+        .stat-card {
+            display: table-cell;
+            text-align: center;
+            padding: 15px 5px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            width: 33.33%;
+            vertical-align: top;
+        }
+
+        .stat-number {
+            font-size: 28px;
+            font-weight: 700;
+            color: #dc3545;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: #666;
+            margin-top: 5px;
+            word-wrap: break-word;
+        }
+
+        /* Skills Chart Section */
+        .skills-section {
+            padding: 25px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .skill-bar-container {
+            margin-bottom: 12px;
+        }
+
+        .skill-bar-header {
+            display: table;
+            width: 100%;
+            margin-bottom: 5px;
+            font-size: 13px;
+        }
+
+        .skill-name {
+            display: table-cell;
+            text-align: left;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .skill-count {
+            display: table-cell;
+            text-align: right;
+            color: #666;
+        }
+
+        .skill-bar-bg {
+            height: 24px;
+            background: #f0f0f0;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .skill-bar-fill {
+            height: 100%;
+            border-radius: 12px;
+            transition: width 0.3s ease;
+        }
+
+        /* Color variations for skill bars */
+        .skill-bar-fill.rank-1 {
+            background: linear-gradient(90deg, #dc3545 0%, #e74c3c 100%);
+        }
+
+        .skill-bar-fill.rank-2 {
+            background: linear-gradient(90deg, #e74c3c 0%, #f39c12 100%);
+        }
+
+        .skill-bar-fill.rank-3 {
+            background: linear-gradient(90deg, #f39c12 0%, #f1c40f 100%);
+        }
+
+        .skill-bar-fill.rank-4 {
+            background: linear-gradient(90deg, #27ae60 0%, #2ecc71 100%);
+        }
+
+        .skill-bar-fill.rank-5 {
+            background: linear-gradient(90deg, #3498db 0%, #5dade2 100%);
+        }
+
+        .skill-bar-fill.rank-default {
+            background: linear-gradient(90deg, #95a5a6 0%, #bdc3c7 100%);
+        }
+
+        /* Insights/Guide Section */
+        .insights-section {
+            padding: 25px;
+            background: linear-gradient(135deg, #fff9e6 0%, #fff3cd 100%);
+            border-bottom: 1px solid #eee;
+        }
+
+        .insights-box {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+        }
+
+        .insights-row {
+            margin-bottom: 15px;
+        }
+
+        .insights-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .insights-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #856404;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .skill-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .skill-tag {
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .skill-tag.essential {
+            background: #dc3545;
+            color: white;
+        }
+
+        .skill-tag.trending {
+            background: #28a745;
+            color: white;
+        }
+
+        .recommendation-text {
+            font-size: 14px;
+            color: #333;
+            line-height: 1.7;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #ffc107;
+        }
+
+        /* Jobs Section */
+        .jobs-section {
+            padding: 25px;
+        }
+
+        .job-card {
+            background: #ffffff;
+            border: 1px solid #e9ecef;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            transition: box-shadow 0.2s ease;
+        }
+
+        .job-card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .job-header {
+            margin-bottom: 15px;
+        }
+
+        .job-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #0066cc;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .job-title:hover {
+            text-decoration: underline;
+        }
+
+        .job-company {
+            font-size: 14px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .job-location {
+            font-size: 13px;
+            color: #666;
+            margin-top: 3px;
+        }
+
+        .job-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .job-meta-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 12px;
+            color: #666;
+            background: #f8f9fa;
+            padding: 4px 10px;
+            border-radius: 15px;
+        }
+
+        .job-meta-item.visa-yes {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .job-meta-item.visa-no {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .job-meta-item.visa-unknown {
+            background: #e9ecef;
+            color: #495057;
+        }
+
+        .job-skills {
+            margin-bottom: 12px;
+        }
+
+        .job-skills-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: #666;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+
+        .job-skill-tag {
+            display: inline-block;
+            padding: 3px 10px;
+            margin: 2px 4px 2px 0;
+            background: #e7f1ff;
+            color: #0066cc;
+            font-size: 12px;
+            border-radius: 12px;
+        }
+
+        .job-skill-tag.preferred {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .job-summary {
+            font-size: 13px;
+            color: #555;
+            line-height: 1.6;
+            padding-top: 12px;
+            border-top: 1px solid #eee;
+        }
+
+        /* Footer Section */
+        .footer {
+            background: #2c3e50;
+            color: #bdc3c7;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .footer-text {
+            font-size: 13px;
+            margin-bottom: 10px;
+        }
+
+        .footer-link {
+            color: #3498db;
+            text-decoration: none;
+        }
+
+        .footer-link:hover {
+            text-decoration: underline;
+        }
+
+        .footer-copyright {
+            font-size: 11px;
+            color: #7f8c8d;
+            margin-top: 15px;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 600px) {
+            .header {
+                padding: 25px 20px;
+            }
+
+            .header-title {
+                font-size: 20px;
+            }
+
+            .summary-grid {
+                flex-direction: column;
+            }
+
+            .stat-card {
+                min-width: 100%;
+            }
+
+            .stat-number {
+                font-size: 28px;
+            }
+
+            .job-meta {
+                flex-direction: column;
+                gap: 6px;
+            }
+
+            .skill-tags {
+                justify-content: center;
+            }
+        }
+
+        /* Print Styles */
+        @media print {
+            .email-container {
+                box-shadow: none;
+            }
+
+            .job-card {
+                break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="email-container">
+        <!-- Header -->
+        <div class="header">
+            <div class="header-flag">&#127464;&#127462;</div>
+            <h1 class="header-title">Today's Canada Data Job Trends</h1>
+            <p class="header-subtitle">Daily LinkedIn Job Analysis Report</p>
+            <div class="header-date">{{ report_date }}</div>
+        </div>
+
+        <!-- Summary Statistics -->
+        <div class="summary-section">
+            <h2 class="summary-title">
+                <span>&#128202;</span> Summary
+            </h2>
+            <div class="summary-grid">
+                <div class="stat-card">
+                    <div class="stat-number">{{ total_jobs }}</div>
+                    <div class="stat-label">New Job Posts</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">{{ skill_chart_data|length }}</div>
+                    <div class="stat-label">Tech Skills Identified</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">{% if top_skills %}{{ top_skills|length }}{% else %}0{% endif %}</div>
+                    <div class="stat-label">Top Skills</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Skills Frequency Chart -->
+        {% if skill_chart_data %}
+        <div class="skills-section">
+            <h2 class="section-title">
+                <span>&#128200;</span> Tech Stack Frequency
+            </h2>
+            {% for skill in skill_chart_data %}
+            <div class="skill-bar-container">
+                <div class="skill-bar-header">
+                    <span class="skill-name">{{ skill.name }}</span>
+                    <span class="skill-count">{{ skill.count }}{% if skill.count > 1 %} jobs{% else %} job{% endif
+                        %}</span>
+                </div>
+                <div class="skill-bar-bg">
+                    {% if loop.index == 1 %}
+                    <div class="skill-bar-fill rank-1" style="width: {{ skill.percentage }}%;"></div>
+                    {% elif loop.index == 2 %}
+                    <div class="skill-bar-fill rank-2" style="width: {{ skill.percentage }}%;"></div>
+                    {% elif loop.index == 3 %}
+                    <div class="skill-bar-fill rank-3" style="width: {{ skill.percentage }}%;"></div>
+                    {% elif loop.index <= 5 %} <div class="skill-bar-fill rank-4"
+                        style="width: {{ skill.percentage }}%;">
+                </div>
+                {% elif loop.index <= 8 %} <div class="skill-bar-fill rank-5" style="width: {{ skill.percentage }}%;">
+            </div>
+            {% else %}
+            <div class="skill-bar-fill rank-default" style="width: {{ skill.percentage }}%;"></div>
+            {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Preparation Guide / Insights -->
+    <div class="insights-section">
+        <h2 class="section-title">
+            <span>&#128161;</span> Preparation Guide
+        </h2>
+        <div class="insights-box">
+            {% if top_skills %}
+            <div class="insights-row">
+                <div class="insights-label">&#127919; Essential Skills (Must Have)</div>
+                <div class="skill-tags">
+                    {% for skill in top_skills %}
+                    <span class="skill-tag essential">{{ skill }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            {% if trending_skills %}
+            <div class="insights-row">
+                <div class="insights-label">&#128640; Trending Skills (Good to Have)</div>
+                <div class="skill-tags">
+                    {% for skill in trending_skills %}
+                    <span class="skill-tag trending">{{ skill }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            {% if recommendation %}
+            <div class="insights-row">
+                <div class="insights-label">&#129302; AI Recommended Priority</div>
+                <div class="recommendation-text">{{ recommendation | replace('\n', '<br>') | safe }}</div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Job Listings -->
+    {% if jobs %}
+    <div class="jobs-section">
+        <h2 class="section-title">
+            <span>&#128188;</span> Job Listings ({{ jobs|length }})
+        </h2>
+
+        {% for job in jobs %}
+        <div class="job-card">
+            <div class="job-header">
+                {% if job.url %}
+                <a href="{{ job.url }}" class="job-title" target="_blank">{{ job.title | default('Untitled Position')
+                    }}</a>
+                {% else %}
+                <span class="job-title">{{ job.title | default('Untitled Position') }}</span>
+                {% endif %}
+                <div class="job-company">{{ job.company | default('Company Not Specified') }}</div>
+                <div class="job-location">&#128205; {{ job.location | default('Canada') }}</div>
+            </div>
+
+            <div class="job-meta">
+                {% if job.experience_years %}
+                <span class="job-meta-item">&#128197; {{ job.experience_years }} years exp.</span>
+                {% endif %}
+                {% if job.education %}
+                <span class="job-meta-item">&#127891; {{ job.education }}</span>
+                {% endif %}
+                {% if job.visa_sponsorship is defined %}
+                {% if job.visa_sponsorship == true %}
+                <span class="job-meta-item visa-yes">&#9989; Visa Sponsorship</span>
+                {% elif job.visa_sponsorship == false %}
+                <span class="job-meta-item visa-no">&#10060; No Visa Sponsorship</span>
+                {% else %}
+                <span class="job-meta-item visa-unknown">&#10067; Visa Info Unknown</span>
+                {% endif %}
+                {% endif %}
+            </div>
+
+            {% if job.required_skills %}
+            <div class="job-skills">
+                <div class="job-skills-label">Required Skills</div>
+                {% for skill in job.required_skills %}
+                <span class="job-skill-tag">{{ skill }}</span>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            {% if job.preferred_skills %}
+            <div class="job-skills">
+                <div class="job-skills-label">Preferred Skills</div>
+                {% for skill in job.preferred_skills %}
+                <span class="job-skill-tag preferred">{{ skill }}</span>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            {% if job.summary %}
+            <div class="job-summary">
+                <strong>Summary:</strong> {{ job.summary }}
+            </div>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="jobs-section">
+        <h2 class="section-title">
+            <span>&#128188;</span> Job Listings
+        </h2>
+        <div class="job-card" style="text-align: center; color: #666;">
+            <p>No new job postings found for today.</p>
+            <p style="font-size: 12px; margin-top: 10px;">Check back tomorrow for updated listings.</p>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Footer -->
+    <div class="footer">
+        <p class="footer-text">
+            This report is automatically generated by LinkedIn JD Analyzer.<br>
+            Analysis powered by OpenAI GPT | Data sourced from LinkedIn Jobs
+        </p>
+        <p class="footer-text">
+            <a href="https://www.linkedin.com/jobs/search/?keywords=Data%20Engineer&location=Canada" class="footer-link"
+                target="_blank">
+                &#128279; View More Jobs on LinkedIn
+            </a>
+        </p>
+        <p class="footer-copyright">
+            &copy; {{ year }} LinkedIn JD Analyzer | Report generated on {{ report_date }}
+        </p>
+    </div>
+    </div>
+</body>
+
+</html>

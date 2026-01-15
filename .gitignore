@@ -1,0 +1,82 @@
+# Environment
+.env
+.venv/
+venv/
+env/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Data files (contain personal job data)
+data/*.json
+data/*.html
+data/*.pkl
+data/*.pickle
+data/*.png
+data/*.txt
+!data/.gitkeep
+
+# AI folder (cookies and sensitive data)
+ai/
+!ai/.gitkeep
+
+# Logs
+*.log
+logs/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Chrome driver
+chromedriver*
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Credentials & Tokens
+*.pkl
+*.pickle
+gmail_token*
+linkedin_cookies*
+credentials*.json
+token*.json
+client_secret*.json
+
+# Claude/AI Assistant
+.claude/
+
+# Temporary files
+nul
+*.tmp
+*.temp
+
+# Screenshots and debug files
+debug_*
+screenshot*
